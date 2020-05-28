@@ -11,8 +11,9 @@ class DHT :
 
 	# Sleep time between retries [s]
 	sleep = 0.5
+
 	# Samples
-	samples = 2000
+	samples = 5000
 
 	#
 	# Constructor
@@ -148,19 +149,3 @@ class DHT :
 def _debug(msg) :
 	if DEBUG :
 		print(msg)
-
-#
-# Test
-#
-if __name__ == "__main__" :
-
-	if len(sys.argv) == 2 :
-
-		dht = DHT(int(sys.argv[1]))
-
-		data = dht.read()
-
-		print("temp: {} / humidity : {}".format(data.getTempCStr(), data.getHumidityStr()))
-
-	else:
-		print("Usage: " + sys.argv[0] + " <BCM GPIO>")
