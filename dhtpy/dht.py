@@ -10,10 +10,10 @@ DEBUG = False
 class DHT :
 
 	# Sleep time between retries [s]
-	sleep = 0.5
+	sleep = 2.0
 
 	# Samples
-	samples = 5000
+	samples = 10000
 
 	#
 	# Constructor
@@ -27,6 +27,7 @@ class DHT :
 	def __read(self) :
 
 		_debug("Reading from GPIO: {}".format(self.pin))
+
 		GPIO.setmode(GPIO.BCM)
 
 		data = []
@@ -35,7 +36,7 @@ class DHT :
 		_debug("GPIO: {} - Set output to HIGH".format(self.pin))
 		GPIO.setup(self.pin, GPIO.OUT)
 		GPIO.output(self.pin, GPIO.HIGH)
-		time.sleep(0.025)
+		time.sleep(0.100)
 
 		# Send start signal
 		_debug("GPIO: {} - Send start signal".format(self.pin))
@@ -102,7 +103,12 @@ class DHT :
 
 			_debug("Read %d bits. OK" %(len(bits)))
 
+			_debug(bits)
+
 		except:
+
+			_debug(bits)
+
 			raise Exception("Not enough data %d / 40 bits" %(len(bits)))
 
 
@@ -133,15 +139,21 @@ class DHT :
 	#
 	def read(self, retries = 5) :
 
-		for i in range(1,retries) :
+		for i in range(0,retries) :
+
 			try :
+
+				# Return result
 				return self.__read()
+
 			except BaseException as e:
 				_debug("Attempt number %d failed. %s" %(i,str(e)))
 				time.sleep(self.sleep)
 				pass # Do nothing - retry
 
+
 		raise Exception("Failed {} attempts...".format(i))
+
 
 #
 # Debug message
