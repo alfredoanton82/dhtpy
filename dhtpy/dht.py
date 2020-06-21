@@ -132,6 +132,10 @@ class DHT :
 		hum  /= 10
 		temp /= 10
 
+		if ( hum > 100.0 ):
+			raise Exception("Bad measuremen %.1f ºC and %.1f %%" %(temp,hum))
+
+
 		return DHTData(hum, temp)
 
 	#
